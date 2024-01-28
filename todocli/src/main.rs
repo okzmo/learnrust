@@ -37,9 +37,7 @@ fn parse_order(order: &str) -> Result<(usize, char), &'static str> {
 
 fn main() {
     println!(
-        "Welcome to Todo CLI, to create a todo just write it, 
-    to mark it as in progress just write TodoNumberP like 1P and to mark it 
-    as done it's similar just change the P to a D"
+        "You can either enter a todo or an index followed by D for 'Done' or P for 'In Progress' like 1P which will mark the first task as in progress"
     );
 
     let mut todos: Vec<Todo> = Vec::new();
