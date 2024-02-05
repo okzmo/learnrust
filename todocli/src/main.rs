@@ -1,4 +1,4 @@
-use std::io;
+use std::io::{self, Write};
 
 #[derive(Debug, PartialEq)]
 enum TodoStatus {
@@ -35,6 +35,16 @@ fn parse_order(order: &str) -> Result<(usize, char), &'static str> {
     }
 }
 
+fn print_todos(todos: &[Todo]) {
+    for todo in todos.iter() {
+        match todo.status {
+            TodoStatus::Done => println!("[X] - {}", todo.name),
+            TodoStatus::InProgress => println!("[~] - {}", todo.name),
+            TodoStatus::Todo => println!("[ ] - {}", todo.name),
+        }
+    }
+}
+
 fn main() {
     println!(
         "You can either enter a todo or an index followed by D for 'Done' or P for 'In Progress' like 1P which will mark the first task as in progress"
@@ -43,7 +53,12 @@ fn main() {
     let mut todos: Vec<Todo> = Vec::new();
 
     loop {
-        println!("Input:");
+        print!("\x1B[2J");
+        print!("\x1B[;H");
+        print_todos(&todos);
+        print!("\x1B[35;1H");
+        print!("Input: ");
+        io::stdout().flush().unwrap();
         let mut order = String::new();
 
         io::stdin().read_line(&mut order).expect("Failed read line");
@@ -72,7 +87,5 @@ fn main() {
                 println!("{}", e);
             }
         }
-
-        println!("{:?}", todos);
     }
 }
